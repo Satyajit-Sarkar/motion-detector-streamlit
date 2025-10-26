@@ -4,6 +4,9 @@ import streamlit as st
 
 st.title("Motion Detection and Marking")
 
+# Add slider for contour area sensitivity
+min_area = st.slider("Minimum contour area for motion detection", min_value=1, max_value=500, value=20, step=1)
+
 option = st.radio("Select video source:", ("Webcam", "Upload"))
 
 if option == "Upload":
@@ -42,7 +45,7 @@ if cap is not None and cap.isOpened():
 
             motion_detected = False
             for contour in contours:
-                if cv2.contourArea(contour) < 20:
+                if cv2.contourArea(contour) < min_area:
                     continue
                 motion_detected = True
                 x, y, w, h = cv2.boundingRect(contour)
